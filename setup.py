@@ -28,7 +28,7 @@ class PostInstallMoveFile(install):
 
 setup(
     name='my-style',
-    version='0.1.0',
+    version='0.1.1',
     py_modules=['my_style'],
     install_requires=[
         'matplotlib',
