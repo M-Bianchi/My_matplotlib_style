@@ -8,22 +8,23 @@ import atexit
 
 import matplotlib
 
-def install_mplstyle(stylefile="mystyle.mplstyle"):
+def install_mplstyle():
+    style_files = ["mystyle.mplstyle", "mystyle_NoLaTeX.mplstyle"]
 
-    mpl_stylelib_dir = os.path.join(matplotlib.get_configdir() ,"stylelib")
+    mpl_stylelib_dir = os.path.join(matplotlib.get_configdir(), "stylelib")
     if not os.path.exists(mpl_stylelib_dir):
         os.makedirs(mpl_stylelib_dir)
 
-    print("Installing style into", mpl_stylelib_dir)
-    shutil.copy(
-        os.path.join(os.path.dirname(__file__), stylefile),
-        os.path.join(mpl_stylelib_dir, stylefile))
+    print("Installing styles into", mpl_stylelib_dir)
+    for stylefile in style_files:
+        src = os.path.join(os.path.dirname(__file__), stylefile)
+        dst = os.path.join(mpl_stylelib_dir, stylefile)
+        shutil.copy(src, dst)
 
 class PostInstallMoveFile(install):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        atexit.register(install_mplstyle("my_style.mplstyle"))
-        atexit.register(install_mplstyle("my_style_NoLaTeX.mplstyle")) 
+        atexit.register(install_mplstyle)
 
 setup(
     name='my-style',
@@ -36,3 +37,4 @@ setup(
         'install': PostInstallMoveFile,
     }
 )
+
